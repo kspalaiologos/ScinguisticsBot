@@ -11,7 +11,7 @@ const freq_midi = (f : number) : number => 69 + 12 * Math.log2(f / 440);
 
 // note => frequency
 const note_freq = (note : string) : number => {
-    const notes = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'];
+    const notes = ['a', 'a#', 'b', 'c', 'c#', 'd', 'd#', 'e', 'f', 'f#', 'g', 'g#'];
     const octave = parseInt(note.length === 3 ? note.charAt(2) : note.charAt(1));
     let key = notes.indexOf(note.slice(0, -1));
 
@@ -25,7 +25,7 @@ const note_freq = (note : string) : number => {
 
 // midi note => note
 const midi_note = (midi : number) => {
-    const SHARPS = "C C# D D# E F F# G G# A A# B".split(" ");
+    const SHARPS = "c c# d d# e f f# g g# a a# b".split(" ");
     const pc = SHARPS[midi % 12];
     const o = Math.floor(midi / 12) - 1;
     return pc + o;
