@@ -12,14 +12,21 @@ const freq_midi = (f : number) : number => 69 + 12 * Math.log2(f / 440);
 // note => frequency
 const note_freq = (note : string) : number => {
     const notes = ['a', 'a#', 'b', 'c', 'c#', 'd', 'd#', 'e', 'f', 'f#', 'g', 'g#'];
-    const octave = parseInt(note.length === 3 ? note.charAt(2) : note.charAt(1));
-    let key = notes.indexOf(note.slice(0, -1));
-
+    let octave = parseInt(note.length === 3 ? note.charAt(2) : note.charAt(1));
+    let cleaned = note.replace("bb", "a#")
+                      .replace("db", "c#")
+                      .replace("eb", "d#")
+                      .replace("gb", "f#")
+                      .replace("ab", "g#");
+    if(note.includes('cb')) {
+        cleaned = 'b';
+        octave--;
+    }
+    let key = notes.indexOf(cleaned.slice(0, -1));
     if (key < 3)
         key = key + 12 + ((octave - 1) * 12) + 1; 
     else
         key = key + ((octave - 1) * 12) + 1; 
-
     return 440 * Math.pow(2, (key - 49) / 12);
 }
 
@@ -40,7 +47,7 @@ const input_type = (input : string) : InputType => {
         return InputType.Frequency;
     else if (input.includes('m'))
         return InputType.MIDINote;
-    else if (input.match(/^[a-g]#?[0-9]$/))
+    else if (input.match(/^[a-g][#b]?[0-9]$/))
         return InputType.Note;
     else
         return InputType.Error;
